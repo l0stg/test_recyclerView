@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestRecyclerView</string>
+    <string name="btn_delete">Delete</string>
+    <string name="tv_number">1</string>
+</resources>
