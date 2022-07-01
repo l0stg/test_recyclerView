@@ -11,8 +11,9 @@ class MyAdapter(): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     private fun updateData() {
         val randomPos = randomPosition
-        notifyItemInserted(randomPos!!)
-        notifyItemRangeChanged(randomPos, itemCount)
+        //notifyItemInserted(randomPos!!)
+        notifyDataSetChanged()
+        notifyItemRangeChanged(randomPos!!, itemCount)
         println("Функция вызвана")
     }
 
@@ -29,8 +30,9 @@ class MyAdapter(): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         holder.tvNumber.text = fillList[position].toString()
         holder.deleteButton.setOnClickListener {
             fillList.removeAt(position)
-            notifyItemRemoved(position)
+            //notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
+            notifyDataSetChanged()
         }
         holder.itemView.setOnClickListener{
             DataModel().addElement()
