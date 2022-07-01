@@ -9,8 +9,6 @@ import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
 class MyAdapter(private var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-
-
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
         val deleteButton: Button = binding.deleteButton
@@ -24,14 +22,14 @@ class MyAdapter(private var myList: MutableList<Int>) : RecyclerView.Adapter<MyA
         holder.tvNumber.text = myList[position].toString()
         holder.deleteButton.setOnClickListener {
             myList.removeAt(position)
-            //notifyItemRemoved(position)
+            notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
-        holder.itemView.setOnClickListener{
-            DataModel().addElement()
-            MainActivity().updateData()
-        }
+      //  holder.itemView.setOnClickListener{
+        //    DataModel().addElement()
+          //  MainActivity().updateData()
+        //}
     }
 
     override fun getItemCount(): Int {

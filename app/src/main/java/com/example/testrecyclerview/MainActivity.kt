@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.testrecyclerview.databinding.ActivityMainBinding
+import kotlinx.coroutines.*
 
 lateinit var binding: ActivityMainBinding
 lateinit var myAdapter: MyAdapter
@@ -19,13 +20,22 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         myAdapter= MyAdapter(fillList)
         recyclerView.adapter = myAdapter
+
+        GlobalScope.launch(Dispatchers.Main) {
+            while (true) {
+                withContext(Dispatchers.Default) {
+                    delay(5000L)
+                    DataModel().addElement()
+                }
+                updateData()
+            }
+        }
     }
 
-    fun updateData() {
+    private fun updateData() {
         val randomPos = randomPosition
-        //notifyItemInserted(randomPos!!)
-        myAdapter.notifyDataSetChanged()
-        myAdapter.notifyItemRangeChanged(randomPos!!, myAdapter.itemCount)
+        myAdapter.notifyItemInserted(randomPos!!)
+        myAdapter.notifyItemRangeChanged(randomPos, myAdapter.itemCount)
         println("Функция вызвана")
     }
 
