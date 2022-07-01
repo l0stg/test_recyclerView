@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val recyclerView: RecyclerView = binding.myRecyclerView
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        myAdapter= MyAdapter(fillList)
+        myAdapter = MyAdapter(fillList)
         recyclerView.adapter = myAdapter
 
         GlobalScope.launch(Dispatchers.Main) {
