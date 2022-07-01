@@ -23,9 +23,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = MyAdapter()
 
-
-        
-
          /*GlobalScope.launch {
             while (true) {
                 delay(5000L)
@@ -34,7 +31,6 @@ class MainActivity : AppCompatActivity() {
                 MyAdapter().getData()
             }
         }*/
-
 
         /* fun getLastElement(): Flow<Int> = flow {
                     val database = fillList  // условная база данных

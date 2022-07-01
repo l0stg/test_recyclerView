@@ -15,7 +15,7 @@ class MyAdapter: RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     fun  getData(){
         DataModel().addElement()
-        notifyItemInserted(fillList.last()+1)
+        notifyDataSetChanged()
         println("Функция вызвана")
     }
 
