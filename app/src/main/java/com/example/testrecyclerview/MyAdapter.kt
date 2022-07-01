@@ -24,12 +24,7 @@ class MyAdapter(private var myList: MutableList<Int>) : RecyclerView.Adapter<MyA
             myList.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
-            //notifyDataSetChanged()
         }
-      //  holder.itemView.setOnClickListener{
-        //    DataModel().addElement()
-          //  MainActivity().updateData()
-        //}
     }
 
     override fun getItemCount(): Int {

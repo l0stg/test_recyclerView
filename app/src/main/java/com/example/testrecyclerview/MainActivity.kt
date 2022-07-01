@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         myAdapter.notifyItemRangeChanged(randomPos, myAdapter.itemCount)
         println("Функция вызвана")
     }
-
 }
 
 
