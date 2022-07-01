@@ -7,15 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
-class MyAdapter(): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(private var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    private fun updateData() {
-        val randomPos = randomPosition
-        //notifyItemInserted(randomPos!!)
-        notifyDataSetChanged()
-        notifyItemRangeChanged(randomPos!!, itemCount)
-        println("Функция вызвана")
-    }
+
 
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
@@ -27,21 +21,21 @@ class MyAdapter(): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.tvNumber.text = fillList[position].toString()
+        holder.tvNumber.text = myList[position].toString()
         holder.deleteButton.setOnClickListener {
-            fillList.removeAt(position)
+            myList.removeAt(position)
             //notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
             notifyDataSetChanged()
         }
         holder.itemView.setOnClickListener{
             DataModel().addElement()
-            updateData()
+            MainActivity().updateData()
         }
     }
 
     override fun getItemCount(): Int {
-        return fillList.size
+        return myList.size
     }
 }
 
