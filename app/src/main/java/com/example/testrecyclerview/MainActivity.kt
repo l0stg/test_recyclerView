@@ -27,13 +27,10 @@ class MainActivity : AppCompatActivity() {
         //Обработка нажатия кнопки DELETE
         myAdapter.setOnItemClickListener(object : MyAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                var fillListCopyMan = myAdapter.myList.toMutableList()
+                val fillListCopyMan = myAdapter.myList.toMutableList()
                 fillListCopyMan.removeAt(position)
-                //fillList.removeAt(position)
                 println("Элемент удален $fillListCopyMan")
                 myAdapter.refreshDataRV(fillListCopyMan)
-                //myAdapter.notifyItemRemoved(position)
-               // myAdapter.notifyItemRangeChanged(position, myAdapter.itemCount)
             }
         })
     }
