@@ -18,7 +18,7 @@ class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.M
     fun setOnItemClickListener(listener: OnItemClickListener){
         mListener = listener
     }
-    
+
     class MyViewHolder(binding: RecyclerviewItemBinding, listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
         private val deleteButton: Button = binding.deleteButton

@@ -21,16 +21,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         myAdapter = MyAdapter(fillList)
         recyclerView.adapter = myAdapter
-        //корутина которая каждые 5 секунд добавляет элемент
-        GlobalScope.launch(Dispatchers.Main) {
-            while (true) {
-                withContext(Dispatchers.Default) {
-                    delay(5000L)
-                    DataModel().addElement()
-                }
-                updateData()
-            }
-        }
+        DataModel().addElementEvery5second()
+
         //Обработка нажатия кнопки DELETE
         myAdapter.setOnItemClickListener(object: MyAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
@@ -40,8 +32,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-    //функция для обновления адаптера при добавлении элемента
-    private fun updateData() {
+
+    //функция для обновления адаптера при добавлении элемента, при добавлении архитектуры вынести во VIEW
+    fun updateData() {
         val randomPos = randomPosition
         myAdapter.notifyItemInserted(randomPos!!)
         myAdapter.notifyItemRangeChanged(randomPos, myAdapter.itemCount)
