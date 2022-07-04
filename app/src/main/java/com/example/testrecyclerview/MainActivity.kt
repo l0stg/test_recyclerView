@@ -3,6 +3,7 @@ package com.example.testrecyclerview
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -24,20 +25,17 @@ class MainActivity : AppCompatActivity() {
         DataModel().addElementEvery5second()
 
         //Обработка нажатия кнопки DELETE
-        myAdapter.setOnItemClickListener(object: MyAdapter.OnItemClickListener {
+        myAdapter.setOnItemClickListener(object : MyAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                myAdapter.myList.removeAt(position)
-                myAdapter.notifyItemRemoved(position)
-                myAdapter.notifyItemRangeChanged(position, myAdapter.itemCount)
+                var fillListCopyMan = myAdapter.myList.toMutableList()
+                fillListCopyMan.removeAt(position)
+                //fillList.removeAt(position)
+                println("Элемент удален $fillListCopyMan")
+                myAdapter.refreshDataRV(fillListCopyMan)
+                //myAdapter.notifyItemRemoved(position)
+               // myAdapter.notifyItemRangeChanged(position, myAdapter.itemCount)
             }
         })
-    }
-
-    //функция для обновления адаптера при добавлении элемента, при добавлении архитектуры вынести во VIEW
-    fun updateData() {
-        val randomPos = randomPosition
-        myAdapter.notifyItemInserted(randomPos!!)
-        myAdapter.notifyItemRangeChanged(randomPos, myAdapter.itemCount)
     }
 }
 

@@ -2,12 +2,40 @@ package com.example.testrecyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
+class DataDiffCallback(
+    private var oldList: MutableList<Int>,
+    private var newList: MutableList<Int>
+): DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldList.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldElement = oldList[oldItemPosition]
+        val newElement = newList[newItemPosition]
+        return oldElement == newElement
+    }
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldElement = oldList[oldItemPosition]
+        val newElement = newList[newItemPosition]
+        return oldElement == newElement
+    }
+}
+
 class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+    //функция DiffUtil для обновления данных
+    fun refreshDataRV(fillListCopy: MutableList<Int>){
+        val diffCallback = DataDiffCallback(myList, fillListCopy)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        myList = fillListCopy.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     private lateinit var mListener: OnItemClickListener
 
@@ -21,9 +49,8 @@ class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.M
 
     class MyViewHolder(binding: RecyclerviewItemBinding, listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
-        private val deleteButton: Button = binding.deleteButton
         init {
-            deleteButton.setOnClickListener {
+            binding.deleteButton.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }
         }
