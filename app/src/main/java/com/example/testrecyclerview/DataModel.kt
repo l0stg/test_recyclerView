@@ -17,7 +17,7 @@ class DataModel {
     fun deleteElement(position: Int) {
         fillListCopy = myAdapter.myList.toMutableList()
         fillListCopy.removeAt(position)
-        myAdapter.refreshDataRV(fillListCopy)
+        myAdapter.changesRV(fillListCopy)
     }
 
     //корутина которая каждые 5 секунд добавляет элемент
@@ -28,7 +28,7 @@ class DataModel {
                     delay(5000L)
                     addElement()
                 }
-                myAdapter.refreshDataRV(fillListCopy)
+                myAdapter.changesRV(fillListCopy)
             }
         }
     }

@@ -30,7 +30,7 @@ class DataDiffCallback(
 
 class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     //функция DiffUtil для обновления данных
-    fun refreshDataRV(fillListCopy: MutableList<Int>){
+    fun changesRV(fillListCopy: MutableList<Int>){
         val diffCallback = DataDiffCallback(myList, fillListCopy)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         myList = fillListCopy.toMutableList()
