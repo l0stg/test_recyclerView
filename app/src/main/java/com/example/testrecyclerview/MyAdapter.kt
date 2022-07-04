@@ -40,7 +40,7 @@ class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.M
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClickDeleteButton(position: Int)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener){
@@ -51,7 +51,7 @@ class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.M
         val tvNumber: TextView = binding.tvNumber
         init {
             binding.deleteButton.setOnClickListener {
-                listener.onItemClick(adapterPosition)
+                listener.onItemClickDeleteButton(adapterPosition)
             }
         }
     }

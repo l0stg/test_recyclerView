@@ -20,17 +20,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val recyclerView: RecyclerView = binding.myRecyclerView
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        myAdapter = MyAdapter(fillList)
+        myAdapter = MyAdapter(DataModel().fillList)
         recyclerView.adapter = myAdapter
-        DataModel().addElementEvery5second()
+        val myDataModel = DataModel()
+        myDataModel.addElementEvery5second()
 
         //Обработка нажатия кнопки DELETE
         myAdapter.setOnItemClickListener(object : MyAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val fillListCopyMan = myAdapter.myList.toMutableList()
-                fillListCopyMan.removeAt(position)
-                println("Элемент удален $fillListCopyMan")
-                myAdapter.refreshDataRV(fillListCopyMan)
+            override fun onItemClickDeleteButton(position: Int) {
+                myDataModel.deleteElement(position)
             }
         })
     }
