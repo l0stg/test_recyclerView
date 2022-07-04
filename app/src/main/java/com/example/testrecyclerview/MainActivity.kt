@@ -1,6 +1,7 @@
 package com.example.testrecyclerview
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         myAdapter = MyAdapter(fillList)
         recyclerView.adapter = myAdapter
-
+        //корутина которая каждые 5 секунд добавляет элемент
         GlobalScope.launch(Dispatchers.Main) {
             while (true) {
                 withContext(Dispatchers.Default) {
@@ -30,13 +31,20 @@ class MainActivity : AppCompatActivity() {
                 updateData()
             }
         }
+        //Обработка нажатия кнопки DELETE
+        myAdapter.setOnItemClickListener(object: MyAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                myAdapter.myList.removeAt(position)
+                myAdapter.notifyItemRemoved(position)
+                myAdapter.notifyItemRangeChanged(position, myAdapter.itemCount)
+            }
+        })
     }
-
+    //функция для обновления адаптера при добавлении элемента
     private fun updateData() {
         val randomPos = randomPosition
         myAdapter.notifyItemInserted(randomPos!!)
         myAdapter.notifyItemRangeChanged(randomPos, myAdapter.itemCount)
-        println("Функция вызвана")
     }
 }
 

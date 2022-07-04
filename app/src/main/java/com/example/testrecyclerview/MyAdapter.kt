@@ -7,24 +7,35 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
-class MyAdapter(private var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private lateinit var mListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener){
+        mListener = listener
+    }
+    
+    class MyViewHolder(binding: RecyclerviewItemBinding, listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
-        val deleteButton: Button = binding.deleteButton
+        private val deleteButton: Button = binding.deleteButton
+        init {
+            deleteButton.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        val itemView = RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(itemView, mListener)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.tvNumber.text = myList[position].toString()
-        holder.deleteButton.setOnClickListener {
-            myList.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
-        }
     }
 
     override fun getItemCount(): Int {
