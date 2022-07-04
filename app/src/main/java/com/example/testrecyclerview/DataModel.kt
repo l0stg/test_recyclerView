@@ -4,21 +4,20 @@ import kotlinx.coroutines.*
 
 class DataModel {
 
-    var fillList = mutableListOf(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
-    var fillListCopyAdd = mutableListOf<Int>()
-    //Добавление элементов, надо уйти от обьявления переменной вне корутины!
+    val fillList = mutableListOf(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+    private var fillListCopy = mutableListOf<Int>()// Сделать этот лист наблюдаемым и когда он меняется вызывать refreshDataRV
+
     private fun addElement() {
-        fillListCopyAdd = myAdapter.myList.toMutableList()
-        val randomPosition = (0..fillListCopyAdd.size).random()
-        val maxFillList = fillListCopyAdd.maxOrNull() ?: 0
-        fillListCopyAdd.add(randomPosition, maxFillList + 1)
+        fillListCopy = myAdapter.myList.toMutableList()
+        val randomPosition = (0..fillListCopy.size).random()
+        val maxFillList = fillListCopy.maxOrNull() ?: 0
+        fillListCopy.add(randomPosition, maxFillList + 1)
     }
 
     fun deleteElement(position: Int) {
-        val fillListCopyMan = myAdapter.myList.toMutableList()
-        fillListCopyMan.removeAt(position)
-        println("Элемент удален $fillListCopyMan")
-        myAdapter.refreshDataRV(fillListCopyMan)
+        fillListCopy = myAdapter.myList.toMutableList()
+        fillListCopy.removeAt(position)
+        myAdapter.refreshDataRV(fillListCopy)
     }
 
     //корутина которая каждые 5 секунд добавляет элемент
@@ -29,8 +28,7 @@ class DataModel {
                     delay(5000L)
                     addElement()
                 }
-                //костыль, надо сделать Observer, тогда будет правильно
-                myAdapter.refreshDataRV(fillListCopyAdd)
+                myAdapter.refreshDataRV(fillListCopy)
             }
         }
     }
