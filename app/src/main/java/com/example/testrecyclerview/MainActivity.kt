@@ -3,6 +3,7 @@ package com.example.testrecyclerview
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,29 +11,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 
-lateinit var binding: ActivityMainBinding
-lateinit var myAdapter: MyAdapter
+
 
 class MainActivity : AppCompatActivity() {
+    private var binding: ActivityMainBinding? = null
+    private var myAdapter: MyAdapter? = null
+    private val viewModel by lazy {
+        ViewModel()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val recyclerView: RecyclerView = binding.myRecyclerView
+        setContentView(binding!!.root)
+        val recyclerView: RecyclerView = binding!!.myRecyclerView
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        myAdapter = MyAdapter(DataModel().fillList)
+        myAdapter = MyAdapter { position -> viewModel.deleteElements(position)}
         recyclerView.adapter = myAdapter
-        val myDataModel = DataModel()
-        myDataModel.addElementEvery5second()
+        myAdapter?.addElementsFirst()
+        viewModel.addElementEvery5second()
+        fun <T> MutableLiveData<T>.subscribe(action: (T) -> Unit) {
+            observe(this@MainActivity) { it?.let { action(it) } }
+        }
 
-        //Обработка нажатия кнопки DELETE
-        myAdapter.setOnItemClickListener(object : MyAdapter.OnItemClickListener {
-            override fun onItemClickDeleteButton(position: Int) {
-                myDataModel.deleteElement(position)
-            }
-        })
+        viewModel.positionLiveData.subscribe {
+                this.myAdapter!!.deleteItem(it)
+        }
+        viewModel.newElementAdd.subscribe {
+            this.myAdapter!!.newElementAdd(it)
+        }
     }
 }
+
 
 
 

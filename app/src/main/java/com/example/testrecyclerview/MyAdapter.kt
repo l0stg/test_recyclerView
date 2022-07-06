@@ -28,8 +28,14 @@ class DataDiffCallback(
     }
 }
 
-class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
-    //функция DiffUtil для обновления данных
+class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
+    var myList: MutableList<Int> = mutableListOf()
+
+    fun addElementsFirst(){
+        myList = DataModel().fillList
+        notifyDataSetChanged()
+    }
     fun changesRV(fillListCopy: MutableList<Int>){
         val diffCallback = DataDiffCallback(myList, fillListCopy)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -37,36 +43,36 @@ class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.M
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private lateinit var mListener: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onItemClickDeleteButton(position: Int)
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener){
-        mListener = listener
-    }
-
-    class MyViewHolder(binding: RecyclerviewItemBinding, listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
-        init {
-            binding.deleteButton.setOnClickListener {
-                listener.onItemClickDeleteButton(adapterPosition)
-            }
-        }
+        val deleteButton = binding.deleteButton
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(itemView, mListener)
+        return MyViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.tvNumber.text = myList[position].toString()
+        holder.deleteButton.setOnClickListener { onItemClicked(position) }
+
     }
 
     override fun getItemCount(): Int {
         return myList.size
+    }
+
+    fun deleteItem(position: Int){
+        myList.removeAt(position)
+        this.notifyDataSetChanged()
+    }
+
+    fun newElementAdd(newElement: Int){
+        val randomPosition = (0..myList.size).random()
+        myList.add(randomPosition, newElement)
+        notifyDataSetChanged()
     }
 }
 
