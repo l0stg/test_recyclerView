@@ -47,6 +47,7 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
         val deleteButton = binding.deleteButton
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -55,8 +56,10 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.tvNumber.text = myList[position].toString()
-        holder.deleteButton.setOnClickListener { onItemClicked(position) }
+        holder.apply {
+            tvNumber.text = myList[position].toString()
+            deleteButton.setOnClickListener { onItemClicked(position) }
+        }
 
     }
 
