@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = myAdapter
         myAdapter?.addElementsFirst()
         viewModel.addElementEvery5second()
+
         fun <T> MutableLiveData<T>.subscribe(action: (T) -> Unit) {
             observe(this@MainActivity) { it?.let { action(it) } }
         }
@@ -38,9 +39,7 @@ class MainActivity : AppCompatActivity() {
                 this.myAdapter!!.deleteItem(it)
         }
         viewModel.newElementAdd.subscribe {
-            val randomPosition = (0..DataModel().fillList.size).random()
-            DataModel().fillList.add(randomPosition, it)
-            this.myAdapter!!.newElementAdd(it, randomPosition)
+            myAdapter!!.newElementAdd(it)
         }
     }
 }

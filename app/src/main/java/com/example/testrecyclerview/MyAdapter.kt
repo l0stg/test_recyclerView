@@ -36,6 +36,7 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
         myList = DataModel().fillList
         notifyDataSetChanged()
     }
+
     fun changesRV(fillListCopy: MutableList<Int>){
         val diffCallback = DataDiffCallback(myList, fillListCopy)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -47,7 +48,6 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
         val tvNumber: TextView = binding.tvNumber
         val deleteButton = binding.deleteButton
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -69,8 +69,8 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
         this.notifyDataSetChanged()
     }
 
-    fun newElementAdd(newElement: Int, position: Int){
-        myList.add(position, newElement)
+    fun newElementAdd(newList: MutableList<Int>){
+        myList = newList
         notifyDataSetChanged()
     }
 }
