@@ -69,9 +69,8 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
         this.notifyDataSetChanged()
     }
 
-    fun newElementAdd(newElement: Int){
-        val randomPosition = (0..myList.size).random()
-        myList.add(randomPosition, newElement)
+    fun newElementAdd(newElement: Int, position: Int){
+        myList.add(position, newElement)
         notifyDataSetChanged()
     }
 }

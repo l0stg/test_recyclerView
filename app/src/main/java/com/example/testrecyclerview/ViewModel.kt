@@ -18,11 +18,8 @@ class ViewModel: ViewModel() {
                 withContext(Dispatchers.IO) {
                     delay(5000L)
                 }
-                val maxFillList = DataModel().fillList.maxOrNull() ?: 0
+                val maxFillList = DataModel().fillList.maxOrNull() ?: (0 + 1)
                 newElementAdd.value = maxFillList
-                val adder = newElementAdd
-                val randomPosition = (0..DataModel().fillList.size).random()
-                DataModel().fillList.add(randomPosition, it)
             }
         }
     }

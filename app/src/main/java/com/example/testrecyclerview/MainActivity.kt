@@ -38,7 +38,9 @@ class MainActivity : AppCompatActivity() {
                 this.myAdapter!!.deleteItem(it)
         }
         viewModel.newElementAdd.subscribe {
-            this.myAdapter!!.newElementAdd(it)
+            val randomPosition = (0..DataModel().fillList.size).random()
+            DataModel().fillList.add(randomPosition, it)
+            this.myAdapter!!.newElementAdd(it, randomPosition)
         }
     }
 }
