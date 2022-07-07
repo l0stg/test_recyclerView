@@ -30,11 +30,11 @@ class DataDiffCallback(
 
 class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    private val myData: DataModel = DataModel()
-    private var myList: MutableList<Int> = myData.fillList
+
+    private var myList: MutableList<Int> = mutableListOf()
 
     fun addElementsFirst(){
-       // myList = myData.fillList
+        myList = DataModel().fillList
         notifyDataSetChanged()
     }
 
