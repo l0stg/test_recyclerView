@@ -69,11 +69,12 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
     }
 
     fun deleteItem(position: Int){
+        myList.removeAt(position)
         this.notifyDataSetChanged()
     }
 
     fun newElementAdd(newList: MutableList<Int>){
-        myList = newList.toMutableList()
+        myList = newList
         notifyDataSetChanged()
     }
 }

@@ -12,8 +12,8 @@ class ViewModel: ViewModel() {
     var newElementAdd: MutableLiveData<MutableList<Int>> = MutableLiveData()
 
     fun deleteElements(position: Int){
+        myData.fillList.removeAt(position)
         positionLiveData.value = position
-        DataModel().fillList.removeAt(position)
     }
     fun addElementEvery5second() {
         CoroutineScope(Dispatchers.Main).launch {
