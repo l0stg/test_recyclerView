@@ -16,8 +16,7 @@ class ViewModel: ViewModel() {
 
     fun deleteElements(position: Int){
         myData.fillList.removeAt(position)
-        val myDates = ArrayList(myData.fillList)
-        listChanges.value = myDates
+        listChanges.value = myData.fillList
     }
 
     fun addElementEvery5second(){
@@ -27,8 +26,7 @@ class ViewModel: ViewModel() {
                 val randomPosition = (0..myData.fillList.size).random()
                 val maxList = (myData.fillList.maxOrNull()?: 0) + 1
                 myData.fillList.add(randomPosition, maxList)
-                val myDates = ArrayList(myData.fillList)
-                listChanges.postValue(myDates)
+                listChanges.postValue(myData.fillList)
             }
         }
     }
