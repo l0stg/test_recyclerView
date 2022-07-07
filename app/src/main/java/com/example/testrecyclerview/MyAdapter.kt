@@ -8,10 +8,10 @@ import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
 class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    private var myList: MutableList<Int> = mutableListOf()
+    private var myList: List<Int> = listOf()
 
     fun set(newList: MutableList<Int>){
-        myList = newList
+        myList = ArrayList(newList)
         notifyDataSetChanged()
     }
 
