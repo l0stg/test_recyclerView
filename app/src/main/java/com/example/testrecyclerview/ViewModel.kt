@@ -13,6 +13,7 @@ class ViewModel: ViewModel() {
 
     fun deleteElements(position: Int){
         positionLiveData.value = position
+        DataModel().fillList.removeAt(position)
     }
     fun addElementEvery5second() {
         CoroutineScope(Dispatchers.Main).launch {
