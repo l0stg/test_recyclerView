@@ -28,18 +28,15 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         myAdapter = MyAdapter { position -> viewModel.deleteElements(position)}
         recyclerView.adapter = myAdapter
-        myAdapter?.addElementsFirst()
+        viewModel.initList()
         viewModel.addElementEvery5second()
 
         fun <T> MutableLiveData<T>.subscribe(action: (T) -> Unit) {
             observe(this@MainActivity) { it?.let { action(it) } }
         }
 
-        viewModel.positionLiveData.subscribe {
-                this.myAdapter!!.deleteItem(it)
-        }
-        viewModel.newElementAdd.subscribe {
-            myAdapter!!.newElementAdd()
+        viewModel.listChanges.subscribe {
+            myAdapter!!.set(it)
         }
     }
 }

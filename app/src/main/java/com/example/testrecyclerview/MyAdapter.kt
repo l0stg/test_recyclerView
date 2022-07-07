@@ -12,10 +12,8 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
 
     var myList: MutableList<Int> = mutableListOf()
 
-    fun addElementsFirst(){
-        (1..15).forEach {
-            myList.add(it)
-        }
+    fun set(newList: MutableList<Int>){
+        this.myList = newList
         notifyDataSetChanged()
     }
 
@@ -40,19 +38,6 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
     override fun getItemCount(): Int {
         return myList.size
     }
-
-    fun deleteItem(position: Int){
-        myList.removeAt(position)
-        this.notifyDataSetChanged()
-    }
-
-    fun newElementAdd() {
-        val randomPosition = (0..itemCount).random()
-        val maxList = (myList.maxOrNull()?: 0) + 1
-        myList.add(randomPosition, maxList)
-        notifyDataSetChanged()
-    }
-
 }
 
 
