@@ -6,27 +6,27 @@ import kotlinx.coroutines.*
 
 class ViewModel: ViewModel() {
 
-    private val fillList: MutableList<Int> = mutableListOf(1,2,3,4,5,6,7,8)
+    private val myData: DataModel = DataModel()
 
     var listChanges: MutableLiveData<MutableList<Int>> = MutableLiveData()
 
     fun initList() {
-        listChanges.value = fillList
+        listChanges.value = myData.fillList
     }
 
     fun deleteElements(position: Int){
-        fillList.removeAt(position)
-        listChanges.value = fillList
+        myData.fillList.removeAt(position)
+        listChanges.value = myData.fillList
     }
 
     fun addElementEvery5second(){
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
                 delay(5000L)
-                val randomPosition = (0..fillList.size).random()
-                val maxList = (fillList.maxOrNull()?: 0) + 1
-                fillList.add(randomPosition, maxList)
-                listChanges.postValue(fillList)
+                val randomPosition = (0..myData.fillList.size).random()
+                val maxList = (myData.fillList.maxOrNull()?: 0) + 1
+                myData.fillList.add(randomPosition, maxList)
+                listChanges.postValue(myData.fillList)
             }
         }
     }

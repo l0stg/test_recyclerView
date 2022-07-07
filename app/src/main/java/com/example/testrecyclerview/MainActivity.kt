@@ -31,11 +31,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.initList()
         viewModel.addElementEvery5second()
 
-        fun <T> MutableLiveData<T>.subscribe(action: (T) -> Unit) {
-            observe(this@MainActivity) { it?.let { action(it) } }
-        }
-
-        viewModel.listChanges.subscribe {
+        viewModel.listChanges.observe(this) {
             myAdapter!!.set(it)
         }
     }

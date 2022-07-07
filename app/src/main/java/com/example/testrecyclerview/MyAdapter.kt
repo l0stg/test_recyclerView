@@ -3,24 +3,21 @@ package com.example.testrecyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
 class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-
-    var myList: MutableList<Int> = mutableListOf()
+    private var myList: MutableList<Int> = mutableListOf()
 
     fun set(newList: MutableList<Int>){
-        this.myList = newList
+        myList = newList
         notifyDataSetChanged()
     }
 
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
         val deleteButton = binding.deleteButton
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
