@@ -7,62 +7,54 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
-class DataDiffCallback(
-    private var oldList: MutableList<Int>,
-    private var newList: MutableList<Int>
-): DiffUtil.Callback() {
+class UsersDiffCallback(
+    private val oldList: List<Int>,
+    private val newList: List<Int>
+) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
-
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldElement = oldList[oldItemPosition]
-        val newElement = newList[newItemPosition]
-        return oldElement == newElement
+        val oldUser = oldList[oldItemPosition]
+        val newUser = newList[newItemPosition]
+        return oldUser == newUser
     }
+
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldElement = oldList[oldItemPosition]
-        val newElement = newList[newItemPosition]
-        return oldElement == newElement
+        val oldUser = oldList[oldItemPosition]
+        val newUser = newList[newItemPosition]
+        return oldUser == newUser
     }
 }
 
-class MyAdapter(var myList: MutableList<Int>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
-    //функция DiffUtil для обновления данных
-    fun changesRV(fillListCopy: MutableList<Int>){
-        val diffCallback = DataDiffCallback(myList, fillListCopy)
+class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
+    private var myList: List<Int> = listOf()
+
+    fun set(newList: MutableList<Int>){
+        val diffCallback = UsersDiffCallback(myList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        myList = fillListCopy.toMutableList()
+        myList = ArrayList(newList)
         diffResult.dispatchUpdatesTo(this)
+        notifyItemRangeChanged(0, itemCount)
     }
 
-    private lateinit var mListener: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onItemClickDeleteButton(position: Int)
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener){
-        mListener = listener
-    }
-
-    class MyViewHolder(binding: RecyclerviewItemBinding, listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvNumber: TextView = binding.tvNumber
-        init {
-            binding.deleteButton.setOnClickListener {
-                listener.onItemClickDeleteButton(adapterPosition)
-            }
-        }
+        val deleteButton = binding.deleteButton
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(itemView, mListener)
+        return MyViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.tvNumber.text = myList[position].toString()
+        holder.apply {
+            tvNumber.text = myList[position].toString()
+            deleteButton.setOnClickListener { onItemClicked(position) }
+        }
     }
 
     override fun getItemCount(): Int {
