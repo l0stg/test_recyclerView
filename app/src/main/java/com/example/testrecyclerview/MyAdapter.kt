@@ -3,16 +3,41 @@ package com.example.testrecyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
+
+class UsersDiffCallback(
+    private val oldList: List<Int>,
+    private val newList: List<Int>
+) : DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldList.size
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldUser = oldList[oldItemPosition]
+        val newUser = newList[newItemPosition]
+        return oldUser == newUser
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldUser = oldList[oldItemPosition]
+        val newUser = newList[newItemPosition]
+        return oldUser == newUser
+    }
+}
 
 class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     private var myList: List<Int> = listOf()
 
     fun set(newList: MutableList<Int>){
+        val diffCallback = UsersDiffCallback(myList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         myList = ArrayList(newList)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+        notifyItemRangeChanged(0, itemCount)
     }
 
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
