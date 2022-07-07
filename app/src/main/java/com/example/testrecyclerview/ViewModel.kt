@@ -7,9 +7,7 @@ import kotlinx.coroutines.*
 class ViewModel: ViewModel() {
 
     private val myData: DataModel = DataModel()
-
     var listChanges: MutableLiveData<MutableList<Int>> = MutableLiveData()
-
     fun initList() {
         listChanges.value = myData.fillList
     }

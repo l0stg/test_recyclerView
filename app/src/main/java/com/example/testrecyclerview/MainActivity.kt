@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModel()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = myAdapter
         viewModel.initList()
         viewModel.addElementEvery5second()
-
         viewModel.listChanges.observe(this) {
             myAdapter!!.set(it)
         }
