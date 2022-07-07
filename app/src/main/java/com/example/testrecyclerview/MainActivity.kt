@@ -3,7 +3,6 @@ package com.example.testrecyclerview
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,30 +10,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 
-
+lateinit var binding: ActivityMainBinding
+lateinit var myAdapter: MyAdapter
 
 class MainActivity : AppCompatActivity() {
-    private var binding: ActivityMainBinding? = null
-    private var myAdapter: MyAdapter? = null
-    private val viewModel by lazy {
-        ViewModel()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
-        val recyclerView: RecyclerView = binding!!.myRecyclerView
+        setContentView(binding.root)
+        val recyclerView: RecyclerView = binding.myRecyclerView
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        myAdapter = MyAdapter { position -> viewModel.deleteElements(position)}
+        myAdapter = MyAdapter(DataModel().fillList)
         recyclerView.adapter = myAdapter
-        viewModel.initList()
-        viewModel.addElementEvery5second()
-        viewModel.listChanges.observe(this) {
-            myAdapter!!.set(it)
-        }
+        val myDataModel = DataModel()
+        myDataModel.addElementEvery5second()
+
+        //Обработка нажатия кнопки DELETE
+        myAdapter.setOnItemClickListener(object : MyAdapter.OnItemClickListener {
+            override fun onItemClickDeleteButton(position: Int) {
+                myDataModel.deleteElement(position)
+            }
+        })
     }
 }
-
 
 
 
