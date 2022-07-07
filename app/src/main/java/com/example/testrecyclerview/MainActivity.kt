@@ -2,8 +2,8 @@ package com.example.testrecyclerview
 
 import MyAdapter
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,9 +12,7 @@ import com.example.testrecyclerview.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     private var myAdapter: MyAdapter? = null
-    private val viewModel by lazy {
-        MainViewModel()
-    }
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
