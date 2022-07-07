@@ -5,28 +5,23 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 
 class ViewModel: ViewModel() {
-    private val myData: DataModel = DataModel()
 
     var positionLiveData: MutableLiveData<Int> = MutableLiveData()
 
-    var newElementAdd: MutableLiveData<MutableList<Int>> = MutableLiveData()
+    var newElementAdd: MutableLiveData<Int> = MutableLiveData()
 
     fun deleteElements(position: Int){
-        myData.fillList.removeAt(position)
         positionLiveData.value = position
     }
-    fun addElementEvery5second() {
-        CoroutineScope(Dispatchers.Main).launch {
+
+    fun addElementEvery5second(){
+        CoroutineScope(Dispatchers.IO).launch {
             while (true) {
-                withContext(Dispatchers.IO) {
-                    delay(5000L)
-                    val maxFillList = myData.fillList.maxOrNull()?.plus(1)
-                    val randomPosition = (0..DataModel().fillList.size).random()
-                    myData.fillList.add(randomPosition, maxFillList!!)
-                    newElementAdd.postValue(myData.fillList)
-                }
+                delay(5000L)
+                newElementAdd.postValue(1)
             }
         }
     }
 }
+
 

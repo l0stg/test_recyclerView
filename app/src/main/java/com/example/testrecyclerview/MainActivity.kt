@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 this.myAdapter!!.deleteItem(it)
         }
         viewModel.newElementAdd.subscribe {
-            myAdapter!!.newElementAdd(it)
+            myAdapter!!.newElementAdd()
         }
     }
 }

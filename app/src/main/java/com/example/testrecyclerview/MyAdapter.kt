@@ -7,42 +7,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testrecyclerview.databinding.RecyclerviewItemBinding
 
-class DataDiffCallback(
-    private var oldList: MutableList<Int>,
-    private var newList: MutableList<Int>
-): DiffUtil.Callback() {
-
-    override fun getOldListSize(): Int = oldList.size
-
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldElement = oldList[oldItemPosition]
-        val newElement = newList[newItemPosition]
-        return oldElement == newElement
-    }
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldElement = oldList[oldItemPosition]
-        val newElement = newList[newItemPosition]
-        return oldElement == newElement
-    }
-}
-
 class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
 
-    private var myList: MutableList<Int> = mutableListOf()
+    var myList: MutableList<Int> = mutableListOf()
 
     fun addElementsFirst(){
-        myList = DataModel().fillList
+        (1..15).forEach {
+            myList.add(it)
+        }
         notifyDataSetChanged()
-    }
-
-    fun changesRV(fillListCopy: MutableList<Int>){
-        val diffCallback = DataDiffCallback(myList, fillListCopy)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        myList = fillListCopy.toMutableList()
-        diffResult.dispatchUpdatesTo(this)
     }
 
     class MyViewHolder(binding: RecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -61,7 +35,6 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
             tvNumber.text = myList[position].toString()
             deleteButton.setOnClickListener { onItemClicked(position) }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -73,10 +46,13 @@ class MyAdapter(private val onItemClicked: ((position: Int) -> Unit)) : Recycler
         this.notifyDataSetChanged()
     }
 
-    fun newElementAdd(newList: MutableList<Int>){
-        myList = newList
+    fun newElementAdd() {
+        val randomPosition = (0..itemCount).random()
+        val maxList = (myList.maxOrNull()?: 0) + 1
+        myList.add(randomPosition, maxList)
         notifyDataSetChanged()
     }
+
 }
 
 
