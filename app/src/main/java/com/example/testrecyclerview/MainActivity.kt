@@ -20,10 +20,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding!!.root)
         val recyclerView: RecyclerView = binding!!.myRecyclerView
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        myAdapter = MyAdapter { position -> viewModel.deleteElements(position) }
+        myAdapter = MyAdapter { viewModel.deleteElements(it) }
         recyclerView.adapter = myAdapter
-        viewModel.initList()
-        viewModel.addElementEvery5second()
         viewModel.listChanges.observe(this) {
             myAdapter!!.set(it)
         }

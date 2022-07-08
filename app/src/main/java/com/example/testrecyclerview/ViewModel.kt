@@ -3,6 +3,7 @@ package com.example.testrecyclerview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
 class MainViewModel: ViewModel() {
@@ -12,7 +13,7 @@ class MainViewModel: ViewModel() {
     private val _listChanges = MutableLiveData<List<Int>>()
     val listChanges: LiveData<List<Int>> = _listChanges
 
-    fun initList() {
+    private fun initList() {
         _listChanges.value = myData.fillList
     }
 
@@ -21,8 +22,8 @@ class MainViewModel: ViewModel() {
         _listChanges.value = myData.fillList
     }
 
-    fun addElementEvery5second(){
-        CoroutineScope(Dispatchers.IO).launch {
+    private fun addElementEvery5second(){
+        viewModelScope.launch {
             while (true) {
                 delay(5000L)
                 val randomPosition = (0..myData.fillList.size).random()
@@ -31,6 +32,10 @@ class MainViewModel: ViewModel() {
                 _listChanges.postValue(myData.fillList)
             }
         }
+    }
+    init {
+        initList()
+        addElementEvery5second()
     }
 
 }
